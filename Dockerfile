@@ -1,5 +1,4 @@
-FROM docker.homura.top:78/akemi/docker-hub/node:18.16.0
-
+FROM $d_route/akemi/docker-hub/node:18.16.0
 
 
 COPY ./start.sh /start.sh

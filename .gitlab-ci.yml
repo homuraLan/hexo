@@ -32,7 +32,7 @@ build:
     - docker:dind
 
   script:
-    - docker build -t $hi_name .
+    - docker build --build-arg d_route=$d_route -t $hi_name .
     - docker login -u homura -p $lab_token $d_route
     - docker tag $hi_name $hd_route
     - docker push $hd_route
