@@ -4,6 +4,7 @@ gitclone() {
     # chmod 700 ~/.ssh
     # chmod 600 ~/.ssh/*
     git clone $repo_url .
+    touch 'hexoInit'
     # folder_name=$(basename "$repo_url" .git)
     # folder_name=${folder_name##*/}
     # echo "$folder_name"
@@ -13,7 +14,6 @@ gitclone() {
     # rm -rf $folder_name
 }
 if [[ ! -d $hexoInit ]]; then
-    touch 'hexoInit'
     gitclone
 fi
 node web_hook.js &
