@@ -1,20 +1,13 @@
 FROM docker.homura.top:78/akemi/docker-hub/node:18.16.0
 
 
-WORKDIR /hexo
 
 COPY ./start.sh /start.sh
-COPY ./update-mirror.sh /
 
-RUN chmod 777 /update-mirror.sh \
-    && /update-mirror.sh \
-    && npm install hexo-cli -g \
-    && apt-get update \
+RUN npm install hexo-cli -g \
     && chmod 777 /start.sh
 
-COPY . /hexo1
-
-
+WORKDIR /hexo
 EXPOSE 4000
 ENTRYPOINT /start.sh
 

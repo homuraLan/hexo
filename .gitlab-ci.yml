@@ -1,15 +1,42 @@
-# The Docker image that will be used to build your app
-image: $d_route/homura/qexo/hexo-docker:test
-# Functions that should be executed before the build script is run
-pages:
+# # The Docker image that will be used to build your app
+# image: $d_route/homura/qexo/hexo-docker:test
+# # Functions that should be executed before the build script is run
+# pages:
+#   script:
+#     - apt-get update
+#   artifacts:
+#     paths:
+#       # The folder that contains the files to be exposed at the Page URL
+#       - public
+#   rules:
+#     # This ensures that only pushes to the default branch will trigger
+#     # a pages deploy
+#     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+#   when: never
+
+
+variables:
+  hd_name: "hexo"
+  hd_route: "$d_route/homura/docker-hub/hexo-docker:latest"
+  hi_name: 'hexo-docker'
+  dh_route: 'homuras/$hi_name:latest'
+
+
+stages:
+  - build
+
+build:
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+
   script:
-    - apt-get update
-  artifacts:
-    paths:
-      # The folder that contains the files to be exposed at the Page URL
-      - public
-  rules:
-    # This ensures that only pushes to the default branch will trigger
-    # a pages deploy
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-  when: never
+    - docker build -t $hi_name .
+    - docker login -u homura -p $lab_token $d_route
+    - docker tag $hi_name $hd_route
+    - docker push $hd_route
+
+    - docker login -u homuras -p $docker_token
+    - docker tag $hi_name $dh_route
+    - docker push $dh_route

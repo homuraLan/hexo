@@ -1,0 +1,12 @@
+version: '3'
+  services:
+    hexo:
+      image: hexo-docker
+      container_name: hexo
+      environment:
+        repo_url: https://gitlab.homura.top:86/homura/hexo.git
+      volumes:
+        - hexo-data:/hexo
+      ports:
+        - "4000:4000"
+        - "5103:5103"

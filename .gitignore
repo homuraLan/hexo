@@ -11,3 +11,6 @@ themes/butterfly/.git
 package-lock.json
 hexoInit
 token
+Dockerfile
+docker-compose.yml
+start.sh
