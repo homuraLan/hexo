@@ -1,3 +1,4 @@
+ARG d_route
 FROM $d_route/akemi/docker-hub/node:18.16.0
 
 
