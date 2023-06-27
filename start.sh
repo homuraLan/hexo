@@ -4,7 +4,6 @@ gitclone() {
     # chmod 700 ~/.ssh
     # chmod 600 ~/.ssh/*
     git clone $repo_url .
-    touch 'hexoInit'
     # folder_name=$(basename "$repo_url" .git)
     # folder_name=${folder_name##*/}
     # echo "$folder_name"
@@ -13,7 +12,7 @@ gitclone() {
     # cp -r $folder_name/.gitlab-ci.yml .
     # rm -rf $folder_name
 }
-if [[ ! -d $hexoInit ]]; then
+if [ -z "$(ls -A)" ]; then
     gitclone
 fi
 node web_hook.js &
