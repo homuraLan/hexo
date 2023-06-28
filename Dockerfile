@@ -1,5 +1,5 @@
 ARG d_route
-FROM $d_route/homura/docker-hub/node:18.16.0
+FROM $d_route/node:18.16.0
 
 
 COPY ./start.sh /start.sh
