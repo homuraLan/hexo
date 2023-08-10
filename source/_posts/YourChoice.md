@@ -5,6 +5,7 @@ categories:
 tags:
   - 电车难题
   - 人伦
+  - 短篇
 title: 你选择？
 date: 2023-6-30 21:41:45
 updated: ""
