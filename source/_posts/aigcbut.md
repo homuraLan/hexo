@@ -1,7 +1,7 @@
 ---
 abbrlink: aigcbut
 categories:
-  - GAME
+  - 哲学
 tags:
     - 哲学
     - 人工智能
