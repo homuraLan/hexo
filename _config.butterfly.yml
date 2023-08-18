@@ -5,7 +5,7 @@
 menu:
   首页: / || icon-home || faa-tada
   代码仓库 || icon-cangku || faa-tada || hide:
-    Gitlab: https://gitlab.homura.top:86/explore || icon-gitlab || faa-tada
+    Gitlab: https://gitlab.homura.top:71/explore || icon-gitlab || faa-tada
     AList: https://office.homura.top:82/AList || icon-a-logo1 || faa-tada
     Github: https://github.com/Sincejunly || icon-github || faa-tada
     文档: https://doc.homura.top || icon-docusaurus || faa-tada
@@ -412,7 +412,7 @@ remark42:
   option:
 
 artalk:
-  server: https://hexoartalk.xiaojimieten.top:82
+  server: https://artalk.homura.top
   site: Homura🍇
   visitor: false
   option:
