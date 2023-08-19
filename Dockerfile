@@ -5,11 +5,11 @@ FROM $d_route/node:18.16.0
 COPY ./start.sh /start.sh
 COPY ./service/* /etc/init.d/
 
-RUN chmod +x /etc/init.d/* \
+RUN chmod +x /etc/init.d/hexo \
+    && chmod +x /etc/init.d/hexo.webhook \
     && update-rc.d hexo.webhook defaults && update-rc.d hexo defaults \
     && npm install hexo-cli -g \
-    && chmod 777 /start.sh \
-    && apt install procps -y 
+    && chmod 777 /start.sh 
 
 WORKDIR /hexo
 EXPOSE 4000
