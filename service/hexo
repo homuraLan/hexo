@@ -27,8 +27,8 @@ case "$1" in
         npm install
         hexo clean
         hexo generate
+        nohup hexo serve 2>&1 >> /var/log/hexo-serve.log & 
         echo $! > $PID_FILE
-        hexo serve 
         ;;
     stop)
         if [ ! -f $PID_FILE ]; then
