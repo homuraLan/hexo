@@ -7,4 +7,4 @@ if [ -z "$(ls -A)" ]; then
     gitclone
 fi
 service hexo.webhook start
-service hexo start
+npm i && hexo cl; hexo g; hexo s

@@ -7,9 +7,8 @@ COPY ./service/* /etc/init.d/
 
 WORKDIR /hexo
 
-RUN chmod +x /etc/init.d/hexo \
-    && chmod +x /etc/init.d/hexo.webhook \
-    && update-rc.d hexo.webhook defaults && update-rc.d hexo defaults \
+RUN chmod +x /etc/init.d/hexo.webhook \
+    && update-rc.d hexo.webhook defaults \
     && npm install hexo-cli -g \
     && chmod 777 /start.sh 
 

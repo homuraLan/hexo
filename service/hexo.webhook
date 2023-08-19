@@ -22,7 +22,7 @@ case "$1" in
             exit 1
         fi
         echo "Starting Hexo Web Hook"
-        nohup $NODE_BIN $APP_PATH >> /var/log/hexo-webhook.log 2>&1 &
+        nohup $NODE_BIN $APP_PATH > >(tee -a /var/log/hexo-webhook.log) 2>&1 &
         echo $! > $PID_FILE
         ;;
     stop)
