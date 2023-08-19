@@ -6,5 +6,5 @@ gitclone() {
 if [ -z "$(ls -A)" ]; then
     gitclone
 fi
-node web_hook.js &
-npm i && hexo cl; hexo g; hexo s
+service hexo.webhook start
+service hexo start

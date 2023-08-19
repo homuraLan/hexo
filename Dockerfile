@@ -3,9 +3,13 @@ FROM $d_route/node:18.16.0
 
 
 COPY ./start.sh /start.sh
+COPY ./service/* /etc/init.d/
 
-RUN npm install hexo-cli -g \
-    && chmod 777 /start.sh
+RUN chmod +x /etc/init.d/* \
+    && update-rc.d hexo.webhook defaults && update-rc.d hexo defaults \
+    && npm install hexo-cli -g \
+    && chmod 777 /start.sh \
+    && apt install procps -y 
 
 WORKDIR /hexo
 EXPOSE 4000
