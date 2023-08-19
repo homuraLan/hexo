@@ -24,7 +24,7 @@ variables:
 
 stages:
   - build
-
+ 
 build:
   image: docker:latest
   stage: build
