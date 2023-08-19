@@ -17,7 +17,7 @@
 
 variables:
   hd_name: "hexo"
-  hd_route: "$d_route/homura/docker-hub/hexo-docker:latest"
+  hd_route: "$d_route/hexo-docker:latest"
   hi_name: 'hexo-docker'
   dh_route: 'homuras/$hi_name:latest'
 
@@ -40,4 +40,3 @@ build:
     - docker login -u homuras -p $docker_token
     - docker tag $hi_name $dh_route
     - docker push $dh_route
-  when: never
