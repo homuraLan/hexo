@@ -29,7 +29,7 @@ case "$1" in
         hexo generate
         nohup hexo serve 2>&1 >> /var/log/hexo-serve.log & 
         echo $! > $PID_FILE
-        ;;
+        ;; 
     stop)
         if [ ! -f $PID_FILE ]; then
             echo "Hexo is not running."
