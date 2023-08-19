@@ -36,7 +36,7 @@ build:
     - docker login -u homura -p $lab_token $d_route
     - docker tag $hi_name $hd_route
     - docker push $hd_route
-
+ 
     - docker login -u homuras -p $docker_token
     - docker tag $hi_name $dh_route
     - docker push $dh_route
