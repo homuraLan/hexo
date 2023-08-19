@@ -20,7 +20,7 @@ variables:
   hd_route: "$d_route/hexo-docker:latest"
   hi_name: 'hexo-docker'
   dh_route: 'homuras/$hi_name:latest'
-
+ 
 
 stages:
   - build
