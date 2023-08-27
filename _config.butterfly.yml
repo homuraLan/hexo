@@ -5,7 +5,7 @@
 menu:
   首页: / || icon-home || faa-tada
   代码仓库 || icon-cangku || faa-tada || hide:
-    Gitlab: https://gitlab.homura.top:71/explore || icon-gitlab || faa-tada
+    Gitlab: https://gitlab.homura.top:70/explore || icon-gitlab || faa-tada
     AList: https://office.homura.top:82/AList || icon-a-logo1 || faa-tada
     Github: https://github.com/Sincejunly || icon-github || faa-tada
     文档: https://doc.homura.top || icon-docusaurus || faa-tada
@@ -718,7 +718,7 @@ aside:
       icon: # fab fa-github
       text: 前往小窝
       #link: https://github.com/fomalhaut1998
-      link: https://gitlab.homura.top:71/homura
+      link: https://gitlab.homura.top:70/homura
   card_announcement:
     enable: true
     #content: <center><b>--- 主域名 ---<br><a href="https://www.fomal.cc" title="此线路部署于Vercel" class="anno_content"><font color="#5ea6e5">fomal.cc</font></a>&nbsp;|&nbsp;<a href="https://www.fomal.cn" title="此线路部署于Vercel" class="anno_content"><font color="#5ea6e5">fomal.cn</font></a><br>--- 备用域名 ---<br><a href="https://netlify.fomal.cc" title="此线路部署于Netlify" class="anno_content"><font color="#5ea6e5">netlify.fomal.cc</font></a><br><a href="https://cloudflare.fomal.cc" title="此线路部署于Cloudflare" class="anno_content"><font color="#5ea6e5">cloudflare.fomal.cc</font></a><br>--- 网站安卓APP ---<br>🍧<a href="https://lskypro.acozycotage.net/Fomalhaut/Fomalhaut.apk" title="点这里可以下载网站的安卓APP" class="anno_content"><font color="#5ea6e5">点此下载</font></a>🍧</b></center>
