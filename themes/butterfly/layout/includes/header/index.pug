@@ -33,7 +33,18 @@ header#page-header(class=isHomeClass style=bg_img)
   if top_img !== false
     if is_post()
       include ./post-info.pug
-      
+
+      script(async, src='https://www.googletagmanager.com/gtag/js?id=G-37QSKB5DDY')
+
+      script.
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-37QSKB5DDY')
+        window.ga_tid = "G-37QSKB5DDY"; // {String} The trackerID of your site.
+        window.ga_api = "https://homura.943384135.workers.dev/"; // {String} Th
+
       //- 安知鱼波浪
       section.main-hero-waves-area.waves-area
         svg.waves-svg(xmlns='http://www.w3.org/2000/svg', xlink='http://www.w3.org/1999/xlink', viewBox='0 24 150 28', preserveAspectRatio='none', shape-rendering='auto')
