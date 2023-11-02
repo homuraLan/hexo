@@ -694,7 +694,8 @@ subtitle:
 preloader:
   enable: true # true|false
   load_color: # '#37474f'
-  load_style: heo # default|gear|ironheart|scarecrow|triangles|wizard|image|spincat|heo(新增)
+  source: 3
+  load_style: spincat # default|gear|ironheart|scarecrow|triangles|wizard|image|spincat|heo(新增)
   load_image: # url
 
 # aside (側邊欄)
