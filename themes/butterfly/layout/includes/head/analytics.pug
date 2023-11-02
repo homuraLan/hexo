@@ -15,6 +15,10 @@ if theme.google_analytics
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', '!{theme.google_analytics}');
+    window.ga_tid = "G-37QSKB5DDY"; // {String} The trackerID of your site.
+    window.ga_api = "https://homura.943384135.workers.dev/"; // {String} Th
+        
+  script(src='https://cdn.jsdelivr.net/npm/cfga@1.0.3', async)
 
 if theme.cnzz_analytics
   script(async data-pjax src=`https://s4.cnzz.com/z_stat.php?id=${theme.cnzz_analytics}&web_id=${theme.cnzz_analytics}`)
