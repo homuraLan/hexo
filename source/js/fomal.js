@@ -3177,9 +3177,9 @@ if (localStorage.getItem("blogbg") != undefined) {
 } else {
   document.getElementById("defineBg").innerText = `:root{
     --default-bg: url(https://lychee.homura.top/uploads/original/21/d4/26e153d14072e1014cbe62d937ba.jpg);
-    --darkmode-bg:url(https://lychee.homura.top/uploads/original/f2/bd/d80eb245407891b7eb44f684dd00.png);
-    --mobileday-bg: url(https://lychee.homura.top/uploads/original/c8/cc/a7d2bdf8c39c50a49eb5eec8cb16.jpg);
-    --mobilenight-bg: url(https://lychee.homura.top/uploads/original/4b/9e/52aaa857f4a5a97301a226d73998.jpg);
+    --darkmode-bg:url(https://lychee.homura.top/uploads/original/4b/9e/52aaa857f4a5a97301a226d73998.jpg);
+    --mobileday-bg: url(https://lychee.homura.top/uploads/original/3f/1e/dd7f48ddb2ca28ff75197e3c2d10.png);
+    --mobilenight-bg: url(https://lychee.homura.top/uploads/original/df/8a/3b8cff6931c491b76457c8627fc4.png);
   }`;
 }
 // 切换背景主函数
