@@ -14,7 +14,8 @@
 #     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
 #   when: never
 
-
+before_script:
+  - docker login -u homuras -p $docker_token
 variables:
   hd_name: "hexo"
   hd_route: "$d_route/hexo-docker:latest"
