@@ -24,15 +24,31 @@ variables:
 
 stages:
   - build
- 
+  - release
+
 build:
   image: docker:latest
   stage: build
   services:
     - docker:dind
- 
   script:
     - docker build --build-arg d_route=$d_route -t $hi_name .
+  #when: never
+
+pushrm:
+  stage: release
+  image:
+    name: chko/docker-pushrm
+    entrypoint: ["/bin/sh", "-c", "/docker-pushrm"]
+  variables:
+    DOCKER_USER: homuras
+    DOCKER_PASS: $docker_token
+    PUSHRM_SHORT: hexo-docker
+    PUSHRM_TARGET: docker.io/$DOCKER_USER/hexo-docker
+    PUSHRM_DEBUG: 1
+    PUSHRM_FILE: $CI_PROJECT_DIR/hub/README.md
+  script: 
+    - /bin/true
     - docker login -u homura -p $lab_token $d_route
     - docker tag $hi_name $hd_route
     - docker push $hd_route
@@ -40,4 +56,3 @@ build:
     - docker login -u homuras -p $docker_token
     - docker tag $hi_name $dh_route
     - docker push $dh_route
-  #when: never
