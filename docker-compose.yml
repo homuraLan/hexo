@@ -4,7 +4,7 @@ version: '3'
       image: hexo-docker
       container_name: hexo
       environment:
-        repo_url: https://gitlab.homura.top:86/homura/hexo.git
+        repo_url: https://gitlab.homura.top:70/homura/hexo.git
       volumes:
         - hexo-data:/hexo
       ports:
