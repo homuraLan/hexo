@@ -25,7 +25,6 @@ variables:
 stages:
   #- build
   - release
-  - push
 
 # build:
 #   stage: build
@@ -33,18 +32,16 @@ stages:
 #   #   - docker:dind
 #   script:
 #     - docker build --build-arg d_route=$d_route -t $hi_name .
+    # - docker login -u homura -p $lab_token $d_route
+    # - docker tag $hi_name $hd_route
+    # - docker push $hd_route
+
+    # - docker login -u homuras -p $docker_token
+    # - docker tag $hi_name $dh_route
+    # - docker push $dh_route
 #   image: docker:latest
 #   #when: never
-push:
-  stage: push
-  script:
-    - docker login -u homura -p $lab_token $d_route
-    - docker tag $hi_name $hd_route
-    - docker push $hd_route
- 
-    - docker login -u homuras -p $docker_token
-    - docker tag $hi_name $dh_route
-    - docker push $dh_route
+
 
 # pushrm:
 #   stage: release
