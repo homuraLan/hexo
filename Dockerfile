@@ -6,8 +6,10 @@ COPY ./start.sh /start.sh
 
 WORKDIR /hexo
 
-RUN npm config set registry https://registry.npm.taobao.org 
+RUN npm config set registry https://registry.npmjs.org
+ 
 RUN npm install hexo-cli -g \
+    && npm install hexo-hide-posts --save -g \
     && chmod 777 /start.sh 
 
 
