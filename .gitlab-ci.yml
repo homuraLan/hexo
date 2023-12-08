@@ -14,8 +14,7 @@
 #     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
 #   when: never
 
-before_script:
-  - docker login -u homuras -p $docker_token
+
 variables:
   hd_name: "hexo"
   hd_route: "$d_route/hexo-docker:latest"
@@ -27,14 +26,14 @@ stages:
   #- build
   - release
 
-build:
-  stage: build
-  # services:
-  #   - docker:dind
-  script:
-    - docker build --build-arg d_route=$d_route -t $hi_name .
-  image: docker:latest
-  #when: never
+# build:
+#   stage: build
+#   # services:
+#   #   - docker:dind
+#   script:
+#     - docker build --build-arg d_route=$d_route -t $hi_name .
+#   image: docker:latest
+#   #when: never
 
 pushrm:
   stage: release
