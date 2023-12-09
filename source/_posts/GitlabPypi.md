@@ -6,10 +6,10 @@ tags:
     - GitLab
     - web服务
     - linux
-hidden: true
+
 title: Gitlab&Pypi
-date: 2023-5-23 23:44:26.21
-updated: 2023-6-13 18:02:45
+date: 2023-12-10 02:51:38
+updated: 2023-12-10 02:51:43
 ---
 
 # 极狐gitlab python pypi packages 仓库使用
