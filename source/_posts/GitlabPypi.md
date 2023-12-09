@@ -1,12 +1,11 @@
 ---
-abbrlink: CrackingGitlab
+abbrlink: GitlabPypi
 categories:
   - 计算机基础
 tags:
     - GitLab
     - web服务
     - linux
-
 title: Gitlab&Pypi
 date: 2023-12-10 02:51:38
 updated: 2023-12-10 02:51:43
