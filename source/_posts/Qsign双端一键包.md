@@ -40,3 +40,10 @@ Qsign8.9.58，其它默认即可
       key: '1145141919810'  # 签名服务器所需要的apikey, 如果签名服务器的版本在1.1.0及以下则此项无效
       authorization: '-'   # authorization 内容, 依服务端设置，如 'Bearer xxxx'
 ```
+```bash
+#!/bin/bash
+
+# 启动go-cqhttp
+./go-cqhttp -faststart
+
+```
