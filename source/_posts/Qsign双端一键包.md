@@ -11,7 +11,27 @@ date: 2023-12-22 16:39:00
 updated: 
 ---
 # 目录示例
-![目录示例](https://lychee.xiaojimieten.top:82/uploads/original/3a/d0/f85e848020336f11be4266cddd33.png)
+```tree
+.
+├── bin
+├── config.yml
+├── data
+├── device.json
+├── go-cqhttp
+├── go-cqhttp.bat
+├── go-cqhttp.exe
+├── go-cqhttp.sh
+├── java
+├── jre
+├── lib
+├── logs
+├── nohup.out
+├── README.md
+├── Start_Qsign.bat
+├── Start_Qsign.sh
+├── txlib
+└── txlib_version.json
+```
 # MCL 
 ## 所需插件
 [fix-protocol-version-1.13.0.mirai2](https://github.com/cssxsh/fix-protocol-version/releases)
