@@ -11,7 +11,7 @@ date: 2023-12-22 16:39:00
 updated: 
 ---
 # 目录示例
-```tree
+```bash
 .
 ├── bin
 ├── config.yml
