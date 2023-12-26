@@ -28,6 +28,9 @@ updated:
 ├── txlib
 └── txlib_version.json
 ```
+# 链接
+https://gitlab.homura.top:70/homura/qsign-onekey.git
+
 # MCL 
 ## 所需插件
 [fix-protocol-version-1.13.0.mirai2](https://github.com/cssxsh/fix-protocol-version/releases)
@@ -40,13 +43,12 @@ updated:
         "key": "1145141919810"
     }
 ```
-### 额外操作
-将txlib/8.9.88内文件的*.json文件复制到MCL的根目录
+<!-- ### 额外操作
+将txlib/8.9.88内文件的*.json文件复制到MCL的根目录 -->
 ### 建议
 Qsign8.9.88，其它默认即可
 安卓手机,安卓平板协议测试通过，机器人登陆时不要使用其它设备登陆
-## 链接
-这种东西我不知道啦
+
 
 # go-cqhttp
 ## 启动方式
