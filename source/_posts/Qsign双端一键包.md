@@ -8,7 +8,7 @@ tags:
     - bash
 title: Qsign双端一键包
 date: 2023-12-22 16:39:00
-updated: 
+updated: 2023-12-28 01:38:52
 ---
 # 目录示例
 ```bash
@@ -35,6 +35,7 @@ https://gitlab.homura.top:70/homura/qsign-onekey.git
 ## 所需插件
 [fix-protocol-version-1.13.0.mirai2](https://github.com/cssxsh/fix-protocol-version/releases)
 ## 启动方式
+0. 先启动qsign-onekey再启动MCL
 1. `git clone https://gitlab.homura.top:70/homura/qsign-onekey.git`
 2. cd qsign-onekey
 3. `./Start_Qsign.bat`
@@ -57,6 +58,7 @@ Qsign8.9.88，其它默认即可
 
 # go-cqhttp
 ## 启动方式
+0. 先启动go-cqhttp生成文件配置文件后再启动qsign-onekey
 1. `git clone https://gitlab.homura.top:70/homura/qsign-onekey.git`
 2. 使用最新版go-cqhttp deb包，直接在包的目录执行go-cqhttp
 3. `./Start_Qsign.sh`
