@@ -34,7 +34,12 @@ https://gitlab.homura.top:70/homura/qsign-onekey.git
 # MCL 
 ## 所需插件
 [fix-protocol-version-1.13.0.mirai2](https://github.com/cssxsh/fix-protocol-version/releases)
-## 推荐配置
+## 启动方式
+1. `git clone https://gitlab.homura.top:70/homura/qsign-onekey.git`
+2. cd qsign-onekey
+3. `./Start_Qsign.bat`
+
+<!-- ## 推荐配置
 ```json
 #KFCFactory.json
     "8.9.88": {
@@ -42,7 +47,7 @@ https://gitlab.homura.top:70/homura/qsign-onekey.git
         "type": "fuqiuluo/unidbg-fetch-qsign",
         "key": "1145141919810"
     }
-```
+``` -->
 <!-- ### 额外操作
 将txlib/8.9.88内文件的*.json文件复制到MCL的根目录 -->
 ### 建议
@@ -52,9 +57,14 @@ Qsign8.9.88，其它默认即可
 
 # go-cqhttp
 ## 启动方式
-1. 解压包
+1. `git clone https://gitlab.homura.top:70/homura/qsign-onekey.git`
 2. 使用最新版go-cqhttp deb包，直接在包的目录执行go-cqhttp
-3. 启动Qsign进行配置，全部默认
+3. `./Start_Qsign.sh`
 ### 建议
 Qsign8.9.88，其它默认即可
 安卓手机,安卓平板协议测试通过，机器人登陆时不要使用其它设备登陆
+{% wow animate__heartBeat,,5s,,10 %}
+{% note red 'fas fa-battery-half' modern%}
+`go-cqhttp`已经被放弃维护，不能够并发大量消息，使用时请注意。
+{% endnote %}
+{% endwow %}
