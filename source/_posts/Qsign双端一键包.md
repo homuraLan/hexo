@@ -38,7 +38,7 @@ https://gitlab.homura.top:70/homura/qsign-onekey.git
 0. 先启动qsign-onekey再启动MCL
 1. `git clone https://gitlab.homura.top:70/homura/qsign-onekey.git`
 2. cd qsign-onekey
-3. `./Start_Qsign.bat`
+3. `./Start_Qsign.bat` 或者 `./Start_Qsign.sh`
 
 <!-- ## 推荐配置
 ```json
@@ -61,7 +61,7 @@ Qsign8.9.88，其它默认即可
 0. 先启动go-cqhttp生成文件配置文件后再启动qsign-onekey
 1. `git clone https://gitlab.homura.top:70/homura/qsign-onekey.git`
 2. 使用最新版go-cqhttp deb包，直接在包的目录执行go-cqhttp
-3. `./Start_Qsign.sh`
+3. `./Start_Qsign.sh` 或者 `./Start_Qsign.bat`
 ### 建议
 Qsign8.9.88，其它默认即可
 安卓手机,安卓平板协议测试通过，机器人登陆时不要使用其它设备登陆
