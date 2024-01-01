@@ -8,7 +8,7 @@ tags:
     - bash
 title: Qsign双端一键包
 date: 2023-12-22 16:39:00
-updated: 2023-12-28 01:38:52
+updated: 2024-1-2 00:18:21
 ---
 # 目录示例
 ```bash
