@@ -31,6 +31,9 @@ updated: 2023-12-28 01:38:52
 # 链接
 https://gitlab.homura.top:70/homura/qsign-onekey.git
 
+# 更改版本方式
+删除生成的`txlib_version.json`,重新生成你要的版本。
+
 # MCL 
 ## 所需插件
 [fix-protocol-version-1.13.0.mirai2](https://github.com/cssxsh/fix-protocol-version/releases)
@@ -52,7 +55,7 @@ https://gitlab.homura.top:70/homura/qsign-onekey.git
 <!-- ### 额外操作
 将txlib/8.9.88内文件的*.json文件复制到MCL的根目录 -->
 ### 建议
-Qsign8.9.88，其它默认即可
+Qsign8.9.58，其它默认即可
 安卓手机,安卓平板协议测试通过，机器人登陆时不要使用其它设备登陆
 
 
@@ -63,7 +66,7 @@ Qsign8.9.88，其它默认即可
 2. 使用最新版go-cqhttp deb包，直接在包的目录执行go-cqhttp
 3. `./Start_Qsign.sh` 或者 `./Start_Qsign.bat`
 ### 建议
-Qsign8.9.88，其它默认即可
+Qsign8.9.58，其它默认即可
 安卓手机,安卓平板协议测试通过，机器人登陆时不要使用其它设备登陆
 {% wow animate__heartBeat,,5s,,10 %}
 {% note red 'fas fa-battery-half' modern%}
