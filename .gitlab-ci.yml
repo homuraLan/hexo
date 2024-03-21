@@ -13,7 +13,7 @@
 #     # a pages deploy
 #     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
 #   when: never
-
+ 
 
 variables:
   hd_name: "hexo"
