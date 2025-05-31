@@ -10,6 +10,7 @@ tags:
 title: 如何防御证书攻击
 date: 2023-11-24 11:46:05
 updated: 
+comments: true
 ---
 
 ## 什么是证书攻击，为什么要防御？

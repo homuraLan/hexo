@@ -1,0 +1,196 @@
+//- CF-Comment 评论系统集成
+//- 检查cf-comment是否在评论系统列表中（忽略大小写）
+- var isCfCommentInUse = theme.comments.use.some(function(item) { return item.toLowerCase() === 'cf-comment'; })
+
+if isCfCommentInUse
+  - var cfCommentConfig = theme['cf-comment']
+  - var server = cfCommentConfig.server
+  - var areaKey = cfCommentConfig.area_key
+  - var cfTheme = cfCommentConfig.theme || 'auto'
+  - var lang = cfCommentConfig.lang || 'zh-CN'
+
+  script.
+    (()=>{
+      function loadCfComment() {
+        const cfCommentWrap = document.getElementById('cf-comment-wrap');
+        if (!cfCommentWrap) {
+          console.error('CF-Comment: 找不到评论容器');
+          return;
+        }
+        
+        // 清空容器内容，避免重复加载
+        cfCommentWrap.innerHTML = '';
+        
+        // 确定主题色
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const resolvedTheme = '!{cfTheme}' === 'auto' ? (isDark ? 'dark' : 'light') : '!{cfTheme}';
+        
+        // 构建iframe URL - 直接使用配置的area_key
+        const iframeUrl = '!{server}' + '/embed/area/' + '!{areaKey}' + '?theme=' + resolvedTheme + '&lang=!{lang}';
+        
+        // 创建iframe
+        cfCommentWrap.innerHTML = `
+          <iframe id="cf-comment-iframe" 
+                  src="${iframeUrl}"
+                  width="100%" 
+                  frameborder="0" 
+                  scrolling="no" 
+                  style="border: none; height: 300px; min-height: 200px; transition: height 0.3s ease;" 
+                  title="CF-Comment评论系统">
+          </iframe>
+        `;
+        
+        // 设置iframe加载事件
+        const iframe = document.getElementById('cf-comment-iframe');
+        if (iframe) {
+          iframe.onload = function() {
+            // iframe加载完成后，尝试获取内容高度进行自适应
+            setTimeout(() => {
+              try {
+                // 如果cf-comment支持，会通过postMessage发送高度信息
+                iframe.contentWindow.postMessage({ type: 'getHeight' }, '!{server}');
+              } catch (e) {
+                // 跨域访问限制，正常情况
+              }
+            }, 1000);
+          };
+          iframe.onerror = function() {
+            console.error('CF-Comment: iframe加载失败');
+            cfCommentWrap.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">评论加载失败，请刷新页面重试</p>';
+          };
+        }
+      }
+      
+      // 主题切换支持
+      function cfCommentChangeMode(theme) {
+        const iframe = document.getElementById('cf-comment-iframe');
+        if (!iframe) return;
+        
+        const cfTheme = theme === 'dark' ? 'dark' : 'light';
+        const currentUrl = new URL(iframe.src);
+        currentUrl.searchParams.set('theme', cfTheme);
+        iframe.src = currentUrl.toString();
+      }
+      
+      // 注册主题切换回调
+      btf.addModeChange('cf-comment', cfCommentChangeMode);
+      
+      // 监听iframe消息，动态调整高度
+      const messageHandler = function(event) {
+        // 检查消息来源
+        if (event.origin !== '!{server}') {
+          return;
+        }
+        
+        const iframe = document.getElementById('cf-comment-iframe');
+        if (!iframe) return;
+        
+        // 处理高度调整消息
+        if (event.data && typeof event.data === 'object') {
+          if (event.data.type === 'resize' && event.data.height) {
+            // cf-comment发送的标准resize消息
+            iframe.style.height = Math.max(event.data.height, 200) + 'px';
+          } else if (event.data.height && !event.data.type) {
+            // 兼容其他格式的高度消息
+            iframe.style.height = Math.max(event.data.height, 200) + 'px';
+          } else if (typeof event.data === 'number') {
+            // 纯数字高度消息
+            iframe.style.height = Math.max(event.data, 200) + 'px';
+          }
+        }
+      };
+      
+      // 移除之前的事件监听器（避免重复绑定）
+      window.removeEventListener('message', window.cfCommentMessageHandler);
+      window.addEventListener('message', messageHandler);
+      window.cfCommentMessageHandler = messageHandler;
+      
+      // 多评论系统切换逻辑
+      const firstCommentSystem = '!{theme.comments.use[0]}';
+      const isLazyload = !{theme.comments.lazyload};
+      
+      if (firstCommentSystem.toLowerCase() === 'cf-comment' || isLazyload) {
+        // cf-comment是默认系统，直接加载
+        if (isLazyload) {
+          btf.loadComment(document.getElementById('cf-comment-wrap'), loadCfComment);
+        } else {
+          loadCfComment();
+        }
+      } else {
+        // cf-comment不是默认系统，定义为备选加载函数
+        window.loadOtherComment = function() {
+          loadCfComment();
+        }
+      }
+    })()
+else
+  script.
+    console.log('❌ CF-Comment Debug: cf-comment不在使用列表中');
+
+script.
+  console.log('✅ CF-Comment Debug: iframe元素已创建');
+  console.log('✅ CF-Comment Debug: 开始加载URL:', '!{iframeUrl}');
+  
+  // 检查iframe是否成功加载
+  const iframe = document.getElementById('cf-comment-iframe');
+  if (iframe) {
+    console.log('✅ CF-Comment Debug: iframe元素找到，ID:', iframe.id);
+    
+    iframe.onload = function() {
+      console.log('✅ CF-Comment Debug: iframe加载完成');
+    };
+    
+    iframe.onerror = function() {
+      console.error('❌ CF-Comment Debug: iframe加载失败');
+    };
+  } else {
+    console.error('❌ CF-Comment Debug: 找不到iframe元素');
+  }
+    
+  // 监听iframe消息，动态调整高度
+  window.addEventListener('message', function(event) {
+    console.log('📨 CF-Comment Debug: 收到消息', event.origin, event.data);
+    
+    if (event.origin !== '!{server}') {
+      console.log('⚠️  CF-Comment Debug: 消息来源不匹配，忽略');
+      return;
+    }
+    
+    const iframe = document.getElementById('cf-comment-iframe');
+    if (iframe && event.data && event.data.type === 'resize' && event.data.height) {
+      iframe.style.height = event.data.height + 'px';
+      console.log('✅ CF-Comment Debug: iframe高度调整为:', event.data.height + 'px');
+    }
+  });
+  
+  // 主题切换支持
+  function updateCfCommentTheme(newTheme) {
+    console.log('🎨 CF-Comment Debug: 切换主题为:', newTheme);
+    const iframe = document.getElementById('cf-comment-iframe');
+    if (iframe) {
+      const currentUrl = new URL(iframe.src);
+      currentUrl.searchParams.set('theme', newTheme);
+      iframe.src = currentUrl.toString();
+      console.log('✅ CF-Comment Debug: 主题更新完成，新URL:', iframe.src);
+    }
+  }
+  
+  // 监听主题变化
+  if (document.documentElement) {
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+          const theme = document.documentElement.getAttribute('data-theme');
+          const cfTheme = theme === 'dark' ? 'dark' : 'light';
+          console.log('🎨 CF-Comment Debug: 检测到主题变化:', theme, '->', cfTheme);
+          updateCfCommentTheme(cfTheme);
+        }
+      });
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+    console.log('✅ CF-Comment Debug: 主题变化监听器已设置');
+  } 

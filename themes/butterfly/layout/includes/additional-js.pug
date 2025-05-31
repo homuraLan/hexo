@@ -47,11 +47,11 @@ div
 
   != partial("includes/third-party/prismjs", {}, { cache: true })
 
-  if theme.aside.enable && theme.newest_comments.enable
-    if theme.pjax.enable
-      != partial("includes/third-party/newest-comments/index", {}, { cache: true })
-    else if (!is_post() && page.aside !== false)
-      != partial("includes/third-party/newest-comments/index", {}, { cache: true })
+  //- if theme.aside.enable && theme.newest_comments.enable
+  //-   if theme.pjax.enable
+  //-     != partial("includes/third-party/newest-comments/index", {}, { cache: true })
+  //-   else if (!is_post() && page.aside !== false)
+  //-     != partial("includes/third-party/newest-comments/index", {}, { cache: true })
 
   != fragment_cache('injectBottom', function(){return injectHtml(theme.inject.bottom)})
 
@@ -73,3 +73,135 @@ div
 
   if theme.busuanzi.site_uv || theme.busuanzi.site_pv || theme.busuanzi.page_pv
     script(async data-pjax src='//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js')
+
+//- Simple test script first
+script.
+  console.log('🧪 Test script loaded - checking basic functionality');
+  console.log('🧪 Current URL:', window.location.href);
+  console.log('🧪 Debug param check:', window.location.search.includes('debug=true'));
+  console.log('🧪 Localhost check:', window.location.hostname === 'localhost');
+
+//- ES Module capability test
+script(type='module').
+  console.log('✅ ES Modules supported');
+  console.log('✅ Module script is executing');
+
+//- Node.js Polyfills for browser compatibility
+script.
+  // 为浏览器环境添加 Node.js polyfills
+  if (typeof global === 'undefined') {
+    window.global = window;
+  }
+  
+  if (typeof process === 'undefined') {
+    window.process = {
+      env: {
+        NODE_ENV: 'development'
+      },
+      browser: true,
+      version: '',
+      versions: {
+        node: '18.0.0'
+      },
+      platform: 'browser',
+      argv: [],
+      cwd: function() { return '/'; },
+      exit: function() {},
+      nextTick: function(callback) {
+        setTimeout(callback, 0);
+      }
+    };
+  }
+  
+  if (typeof Buffer === 'undefined') {
+    window.Buffer = {
+      from: function(str) { return str; },
+      isBuffer: function() { return false; }
+    };
+  }
+  
+  console.log('🔧 Node.js polyfills loaded for browser');
+
+//- Stagewise Toolbar - Local Installation with Dynamic Import
+script.
+  console.log('🚀 Stagewise: Starting initialization...');
+  
+  // 检查开发环境和调试模式
+  const isDevelopment = window.location.hostname === 'localhost';
+  const isDebugMode = window.location.search.includes('debug=true');
+  
+  if (isDevelopment && isDebugMode) {
+    console.log('🚀 Stagewise: ✅ Loading local version...');
+    
+    // 动态导入本地安装的Stagewise
+    import('https://unpkg.com/@stagewise/toolbar@latest/dist/index.js')
+      .then(({ initToolbar }) => {
+        console.log('🚀 Stagewise: Local module loaded');
+        
+        // Hexo博客配置
+        const config = {
+          plugins: [
+            {
+              name: 'hexo-blog-plugin',
+              description: 'Hexo blog editing context',
+              shortInfoForPrompt: (element) => {
+                if (element.classList.contains('post-content')) {
+                  return "博客文章内容区域";
+                }
+                if (element.classList.contains('card-widget')) {
+                  return "侧边栏小组件";
+                }
+                return "Hexo博客元素";
+              },
+              actions: [
+                {
+                  name: 'Edit Blog Post',
+                  description: '编辑博客文章',
+                  execute: (el) => console.log('编辑:', el)
+                },
+                {
+                  name: 'Optimize SEO',
+                  description: 'SEO优化建议',
+                  execute: (el) => console.log('SEO优化:', el)
+                }
+              ]
+            }
+          ]
+        };
+        
+        initToolbar(config);
+        console.log('🚀 Stagewise: ✅ 工具栏已激活');
+        
+        // 显示成功提示
+        const indicator = document.createElement('div');
+        indicator.textContent = '🚀 Stagewise 已激活';
+        indicator.style.cssText = `
+          position: fixed; top: 10px; left: 10px; 
+          background: #4CAF50; color: white; 
+          padding: 10px 15px; border-radius: 5px; 
+          font-size: 13px; z-index: 9999;
+          font-family: monospace;
+        `;
+        document.body.appendChild(indicator);
+        setTimeout(() => indicator.remove(), 4000);
+        
+      })
+      .catch(error => {
+        console.error('🚀 Stagewise: ❌ 加载失败:', error);
+        
+        // 错误提示
+        const errorIndicator = document.createElement('div');
+        errorIndicator.textContent = '❌ Stagewise 加载失败';
+        errorIndicator.style.cssText = `
+          position: fixed; top: 10px; left: 10px; 
+          background: #f44336; color: white; 
+          padding: 10px 15px; border-radius: 5px; 
+          font-size: 13px; z-index: 9999;
+          font-family: monospace;
+        `;
+        document.body.appendChild(errorIndicator);
+        setTimeout(() => errorIndicator.remove(), 5000);
+      });
+  } else {
+    console.log('🚀 Stagewise: 仅在开发模式下启用 (localhost + debug=true)');
+  }

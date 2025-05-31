@@ -260,6 +260,11 @@ mixin postUI(posts)
                       a(href=url_for(link) + '#post-comment')
                         span.artalk-count(data-page-key=url_for(link))
                           i.fa-solid.fa-spinner.fa-spin
+                  when 'cf-comment'
+                    +countBlockInIndex
+                      a(href=url_for(link) + '#post-comment')
+                        span.cf-comment-count(data-page-key=url_for(link))
+                          i.fa-solid.fa-spinner.fa-spin
         a.article-content(href=url_for(link) title=title)
           //- Display the article introduction on homepage
           case theme.index_post_content.method

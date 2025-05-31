@@ -297,14 +297,15 @@ addtoany:
 
 comments:
   # Up to two comments system, the first will be shown as default
-  # Choose: Disqus/Disqusjs/Livere/Gitalk/Valine/Waline/Utterances/Facebook Comments/Twikoo/Giscus/Remark42
+  # Choose: Disqus/Disqusjs/Livere/Gitalk/Valine/Waline/Utterances/Facebook Comments/Twikoo/Giscus/Remark42/CF-Comment
   use:
+    - cf-comment
     - artalk
     #- twikoo  # Valine,Disqus,...
   text: true # Display the comment name next to the button
   # lazyload: The comment system will be load when comment element enters the browser's viewport.
   # If you set it to true, the comment count will be invalid
-  lazyload: true
+  lazyload: false
   count: false # Display comment count in post's top_img
   card_post_count: false # Display comment count in Home Page
 
@@ -416,6 +417,15 @@ artalk:
   site: Homura
   visitor: false
   option:
+
+# CF-Comment - Cloudflare Worker Comment System
+# https://github.com/joyance-professional/cf-comment
+cf-comment:
+  server: https://cf.homura.top
+  area_key: cfhexo
+  theme: auto # light/dark/auto
+  lang: zh-CN # zh-CN/en
+  enable: true
 
 # Chat Services
 # --------------------------------------

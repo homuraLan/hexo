@@ -90,7 +90,11 @@
         else if commentUse[0] === 'Artalk' && theme.artalk.visitor
           +pvBlock('','','')
             span#ArtalkPV
-              i.fa-solid.fa-spinner.fa-spin              
+              i.fa-solid.fa-spinner.fa-spin
+        else if commentUse[0] === 'cf-comment' && theme.cf-comment.visitor
+          +pvBlock('','','')
+            span#cf-comment-pv
+              i.fa-solid.fa-spinner.fa-spin                 
         else if theme.busuanzi.page_pv
           +pvBlock('','post-meta-pv-cv','')
             span#busuanzi_value_page_pv
@@ -158,4 +162,9 @@
             +countBlock
               a(href=url_for(page.path) + '#post-comment')
                 span.artalk-count
+                  i.fa-solid.fa-spinner.fa-spin
+          when 'cf-comment'
+            +countBlock
+              a(href=url_for(page.path) + '#post-comment')
+                span.cf-comment-count
                   i.fa-solid.fa-spinner.fa-spin
