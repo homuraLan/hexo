@@ -45,6 +45,42 @@ hr
           when 'Artalk'
             #artalk-wrap
           when 'cf-comment'
+            - var cfConfig = theme['cf-comment'] || {}
+            - var cfServer = cfConfig.server || ''
+            - var cfSiteKey = cfConfig.site_key || 'default'
+            - var cfAreaKey = page.comment_id || page.path.replace(/\//g, '-').replace(/\.html$/, '').replace(/^-|-$/g, '') || 'default'
+            - var cfTheme = cfConfig.theme || 'auto'
+            - var cfLang = cfConfig.lang || 'zh-CN'
+            - var cfPageTitle = page.title || '评论区'
+            - var cfPageUrl = page.path || ''
+            #cf-comment-data(
+              data-server=cfServer
+              data-site-key=cfSiteKey
+              data-area-key=cfAreaKey
+              data-theme=cfTheme
+              data-lang=cfLang
+              data-area-name=cfPageTitle
+              data-page-url=cfPageUrl
+              style="display:none"
+            )
             #cf-comment-wrap
           when 'Cf-Comment'
+            - var cfConfig = theme['cf-comment'] || {}
+            - var cfServer = cfConfig.server || ''
+            - var cfSiteKey = cfConfig.site_key || 'default'
+            - var cfAreaKey = page.comment_id || page.path.replace(/\//g, '-').replace(/\.html$/, '').replace(/^-|-$/g, '') || 'default'
+            - var cfTheme = cfConfig.theme || 'auto'
+            - var cfLang = cfConfig.lang || 'zh-CN'
+            - var cfPageTitle = page.title || '评论区'
+            - var cfPageUrl = page.path || ''
+            #cf-comment-data(
+              data-server=cfServer
+              data-site-key=cfSiteKey
+              data-area-key=cfAreaKey
+              data-theme=cfTheme
+              data-lang=cfLang
+              data-area-name=cfPageTitle
+              data-page-url=cfPageUrl
+              style="display:none"
+            )
             #cf-comment-wrap

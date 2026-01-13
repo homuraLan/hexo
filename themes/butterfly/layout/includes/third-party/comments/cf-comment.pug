@@ -3,31 +3,9 @@
 - var isCfCommentInUse = theme.comments.use.some(function(item) { return item.toLowerCase() === 'cf-comment'; })
 
 if isCfCommentInUse
-  - var cfCommentConfig = theme['cf-comment']
-  - var server = cfCommentConfig.server
-  - var siteKey = cfCommentConfig.site_key || 'default'
-  //- 动态生成area_key：优先使用文章自定义的comment_id，否则根据页面路径生成
-  - var dynamicAreaKey = page.comment_id || page.path.replace(/\//g, '-').replace(/\.html$/, '').replace(/^-|-$/g, '') || 'default'
-  - var cfTheme = cfCommentConfig.theme || 'auto'
-  - var lang = cfCommentConfig.lang || 'zh-CN'
-  //- 获取页面标题和URL用于自动创建评论区
-  - var pageTitle = page.title || '评论区'
-  - var pageUrl = page.path || ''
   //- 评论系统切换逻辑所需变量
   - var firstCommentSystem = (theme.comments.use[0] || '').toLowerCase()
   - var isLazyloadEnabled = theme.comments.lazyload === true ? 'true' : 'false'
-
-  //- 将动态数据存储在隐藏元素中，供JS运行时读取
-  #cf-comment-data(
-    data-server=server
-    data-site-key=siteKey
-    data-area-key=dynamicAreaKey
-    data-theme=cfTheme
-    data-lang=lang
-    data-area-name=pageTitle
-    data-page-url=pageUrl
-    style="display:none"
-  )
 
   script.
     (()=>{
