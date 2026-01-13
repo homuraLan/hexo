@@ -1,5 +1,5 @@
-- const { server, site_key } = theme['cf-comment']
-- const siteKey = site_key || 'default'
+- var { server, site_key } = theme['cf-comment']
+- var siteKey = site_key || 'default'
 
 script.
   window.addEventListener('load', () => {
@@ -29,7 +29,7 @@ script.
           result += '<div class=\'aside-list-item\'>'
 
           if (!{theme.newest_comments.avatar}) {
-            // cf-comment 暂不支持头像，使用默认头像
+            // cf-comment 暂不支持头像，使用默认头�?
             const name = '!{theme.lazyload.enable ? "data-lazy-src" : "src"}'
             result += `<a href='${commentUrl}' class='thumbnail'><img ${name}='https://cravatar.cn/avatar/?d=mp&s=48' alt='用户'></a>`
           }
