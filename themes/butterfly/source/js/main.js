@@ -715,6 +715,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   const lazyloadImg = () => {
+    if (typeof LazyLoad === 'undefined') {
+      console.warn('LazyLoad library not loaded, skipping lazy loading')
+      return
+    }
     window.lazyLoadInstance = new LazyLoad({
       elements_selector: 'img',
       threshold: 0,

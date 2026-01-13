@@ -3,31 +3,35 @@
 script.
   function loadArtalk () {
     function initArtalk () {
-      window.artalkItem = new Artalk(Object.assign({
-        el: '#artalk-wrap',
-        server: '!{server}',
-        site: '!{site}',
-        pageKey: location.pathname,
-        darkMode: document.documentElement.getAttribute('data-theme') === 'dark',
-        countEl: '.artalk-count'
-      },!{JSON.stringify(option)}))
+      try {
+        window.artalkItem = new Artalk(Object.assign({
+          el: '#artalk-wrap',
+          server: '!{server}',
+          site: '!{site}',
+          pageKey: location.pathname,
+          darkMode: document.documentElement.getAttribute('data-theme') === 'dark',
+          countEl: '.artalk-count'
+        },!{JSON.stringify(option)}))
 
-      if (GLOBAL_CONFIG.lightbox === 'null') return
-      window.artalkItem.use(ctx => {
-        ctx.on('list-loaded', () => {
-          ctx.getCommentList().forEach(comment => {
-            const $content = comment.getRender().$content
-            btf.loadLightbox($content.querySelectorAll('img:not([atk-emoticon])'))
+        if (GLOBAL_CONFIG.lightbox === 'null') return
+        window.artalkItem.use(ctx => {
+          ctx.on('list-loaded', () => {
+            ctx.getCommentList().forEach(comment => {
+              const $content = comment.getRender().$content
+              btf.loadLightbox($content.querySelectorAll('img:not([atk-emoticon])'))
+            })
           })
         })
-      })
+      } catch (e) {
+        console.warn('Artalk initialization failed:', e.message)
+      }
     }
 
     if (typeof window.artalkItem === 'object') initArtalk()
     else {
       getCSS('!{theme.asset.artalk_css}').then(()=>{
-        getScript('!{theme.asset.artalk_js}').then(initArtalk)
-      })
+        getScript('!{theme.asset.artalk_js}').then(initArtalk).catch(e => console.warn('Artalk script load failed'))
+      }).catch(e => console.warn('Artalk CSS load failed'))
     }
   }
 

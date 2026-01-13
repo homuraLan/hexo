@@ -1,0 +1,91 @@
+- const { server, site_key } = theme['cf-comment']
+- const siteKey = site_key || 'default'
+
+script.
+  window.addEventListener('load', () => {
+    const changeContent = (content) => {
+      if (content === '') return content
+
+      content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[!{_p("aside.card_newest_comments.image")}]')
+      content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[!{_p("aside.card_newest_comments.link")}]')
+      content = content.replace(/<pre><code>.*?<\/pre>/gi, '[!{_p("aside.card_newest_comments.code")}]')
+      content = content.replace(/<[^>]+>/g, '')
+
+      if (content.length > 150) {
+        content = content.substring(0, 150) + '...'
+      }
+      return content
+    }
+
+    const generateHtml = array => {
+      let result = ''
+
+      if (array.length) {
+        for (let i = 0; i < array.length; i++) {
+          // 使用 page_url（存储在intro字段中）来链接到文章，如果没有则使用 area_key
+          const pageUrl = array[i].page_url ? '/' + array[i].page_url : '/' + array[i].area_key.replace(/-/g, '/') + '.html'
+          const commentUrl = pageUrl + '#cf-comment-wrap'
+
+          result += '<div class=\'aside-list-item\'>'
+
+          if (!{theme.newest_comments.avatar}) {
+            // cf-comment 暂不支持头像，使用默认头像
+            const name = '!{theme.lazyload.enable ? "data-lazy-src" : "src"}'
+            result += `<a href='${commentUrl}' class='thumbnail'><img ${name}='https://cravatar.cn/avatar/?d=mp&s=48' alt='用户'></a>`
+          }
+
+          result += `<div class='content'>
+          <a class='comment' href='${commentUrl}' title='${array[i].preview}'>${changeContent(array[i].preview)}</a>
+          <div class='name'><span>${array[i].area_name} / </span><time datetime="${array[i].created_at}">${btf.diffDate(array[i].created_at, true)}</time></div>
+          </div></div>`
+        }
+      } else {
+        result += '!{_p("aside.card_newest_comments.zero")}'
+      }
+
+      let $dom = document.querySelector('#card-newest-comments .aside-list')
+      $dom.innerHTML = result
+      window.lazyLoadInstance && window.lazyLoadInstance.update()
+      window.pjax && window.pjax.refresh($dom)
+    }
+
+    const getComment = async () => {
+      try {
+        const res = await fetch('!{server}/api/!{siteKey}/latest-comments?limit=!{theme.newest_comments.limit}', { method: 'GET' })
+        const result = await res.json()
+
+        if (result.success && result.data) {
+          const cfCommentArray = result.data.map(e => ({
+            'preview': e.preview || e.content,
+            'area_key': e.area_key,
+            'area_name': e.area_name || e.area_key,
+            'page_url': e.page_url || '',
+            'created_at': e.created_at
+          }))
+
+          saveToLocal.set('cf-comment-newest-comments', JSON.stringify(cfCommentArray), !{theme.newest_comments.storage}/(60*24))
+          generateHtml(cfCommentArray)
+        } else {
+          throw new Error(result.message || '获取评论失败')
+        }
+      } catch (e) {
+        console.error('CF-Comment newest comments error:', e)
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML = '!{_p("aside.card_newest_comments.error")}'
+      }
+    }
+
+    const newestCommentInit = () => {
+      if (document.querySelector('#card-newest-comments .aside-list')) {
+        const data = saveToLocal.get('cf-comment-newest-comments')
+        if (data) {
+          generateHtml(JSON.parse(data))
+        } else {
+          getComment()
+        }
+      }
+    }
+
+    newestCommentInit()
+    document.addEventListener('pjax:complete', newestCommentInit)
+  })

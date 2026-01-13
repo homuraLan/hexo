@@ -61,7 +61,7 @@ script.
       item.parentNode.replaceChild(newScript, item)
     })
 
-    GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+    GLOBAL_CONFIG.islazyload && window.lazyLoadInstance && window.lazyLoadInstance.update()
 
     typeof chatBtnFn === 'function' && chatBtnFn()
     typeof panguInit === 'function' && panguInit()

@@ -5,9 +5,14 @@
 if isCfCommentInUse
   - var cfCommentConfig = theme['cf-comment']
   - var server = cfCommentConfig.server
-  - var areaKey = cfCommentConfig.area_key
+  - var siteKey = cfCommentConfig.site_key || 'default'
+  //- 动态生成area_key：优先使用文章自定义的comment_id，否则根据页面路径生成
+  - var dynamicAreaKey = page.comment_id || page.path.replace(/\//g, '-').replace(/\.html$/, '').replace(/^-|-$/g, '') || 'default'
   - var cfTheme = cfCommentConfig.theme || 'auto'
   - var lang = cfCommentConfig.lang || 'zh-CN'
+  //- 获取页面标题和URL用于自动创建评论区
+  - var pageTitle = page.title || '评论区'
+  - var pageUrl = page.path || ''
 
   script.
     (()=>{
@@ -17,16 +22,22 @@ if isCfCommentInUse
           console.error('CF-Comment: 找不到评论容器');
           return;
         }
-        
+
         // 清空容器内容，避免重复加载
         cfCommentWrap.innerHTML = '';
-        
+
         // 确定主题色
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         const resolvedTheme = '!{cfTheme}' === 'auto' ? (isDark ? 'dark' : 'light') : '!{cfTheme}';
-        
-        // 构建iframe URL - 直接使用配置的area_key
-        const iframeUrl = '!{server}' + '/embed/area/' + '!{areaKey}' + '?theme=' + resolvedTheme + '&lang=!{lang}';
+
+        // 动态area_key - 每篇文章对应独立的评论区
+        const siteKey = '!{siteKey}';
+        const areaKey = '!{dynamicAreaKey}';
+        const areaName = encodeURIComponent('!{pageTitle}');
+        const pageUrl = encodeURIComponent('!{pageUrl}');
+
+        // 构建iframe URL - 支持自动创建评论区，page_url字段存储文章URL
+        const iframeUrl = '!{server}' + '/embed/' + siteKey + '/' + areaKey + '?theme=' + resolvedTheme + '&lang=!{lang}&auto_create=1&area_name=' + areaName + '&page_url=' + pageUrl;
         
         // 创建iframe
         cfCommentWrap.innerHTML = `
@@ -123,74 +134,3 @@ if isCfCommentInUse
         }
       }
     })()
-else
-  script.
-    console.log('❌ CF-Comment Debug: cf-comment不在使用列表中');
-
-script.
-  console.log('✅ CF-Comment Debug: iframe元素已创建');
-  console.log('✅ CF-Comment Debug: 开始加载URL:', '!{iframeUrl}');
-  
-  // 检查iframe是否成功加载
-  const iframe = document.getElementById('cf-comment-iframe');
-  if (iframe) {
-    console.log('✅ CF-Comment Debug: iframe元素找到，ID:', iframe.id);
-    
-    iframe.onload = function() {
-      console.log('✅ CF-Comment Debug: iframe加载完成');
-    };
-    
-    iframe.onerror = function() {
-      console.error('❌ CF-Comment Debug: iframe加载失败');
-    };
-  } else {
-    console.error('❌ CF-Comment Debug: 找不到iframe元素');
-  }
-    
-  // 监听iframe消息，动态调整高度
-  window.addEventListener('message', function(event) {
-    console.log('📨 CF-Comment Debug: 收到消息', event.origin, event.data);
-    
-    if (event.origin !== '!{server}') {
-      console.log('⚠️  CF-Comment Debug: 消息来源不匹配，忽略');
-      return;
-    }
-    
-    const iframe = document.getElementById('cf-comment-iframe');
-    if (iframe && event.data && event.data.type === 'resize' && event.data.height) {
-      iframe.style.height = event.data.height + 'px';
-      console.log('✅ CF-Comment Debug: iframe高度调整为:', event.data.height + 'px');
-    }
-  });
-  
-  // 主题切换支持
-  function updateCfCommentTheme(newTheme) {
-    console.log('🎨 CF-Comment Debug: 切换主题为:', newTheme);
-    const iframe = document.getElementById('cf-comment-iframe');
-    if (iframe) {
-      const currentUrl = new URL(iframe.src);
-      currentUrl.searchParams.set('theme', newTheme);
-      iframe.src = currentUrl.toString();
-      console.log('✅ CF-Comment Debug: 主题更新完成，新URL:', iframe.src);
-    }
-  }
-  
-  // 监听主题变化
-  if (document.documentElement) {
-    const observer = new MutationObserver(function(mutations) {
-      mutations.forEach(function(mutation) {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          const theme = document.documentElement.getAttribute('data-theme');
-          const cfTheme = theme === 'dark' ? 'dark' : 'light';
-          console.log('🎨 CF-Comment Debug: 检测到主题变化:', theme, '->', cfTheme);
-          updateCfCommentTheme(cfTheme);
-        }
-      });
-    });
-    
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme']
-    });
-    console.log('✅ CF-Comment Debug: 主题变化监听器已设置');
-  } 

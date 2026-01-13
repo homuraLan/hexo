@@ -47,11 +47,11 @@ div
 
   != partial("includes/third-party/prismjs", {}, { cache: true })
 
-  //- if theme.aside.enable && theme.newest_comments.enable
-  //-   if theme.pjax.enable
-  //-     != partial("includes/third-party/newest-comments/index", {}, { cache: true })
-  //-   else if (!is_post() && page.aside !== false)
-  //-     != partial("includes/third-party/newest-comments/index", {}, { cache: true })
+  if theme.aside.enable && theme.newest_comments.enable
+    if theme.pjax.enable
+      != partial("includes/third-party/newest-comments/index", {}, { cache: true })
+    else if (!is_post() && page.aside !== false)
+      != partial("includes/third-party/newest-comments/index", {}, { cache: true })
 
   != fragment_cache('injectBottom', function(){return injectHtml(theme.inject.bottom)})
 
