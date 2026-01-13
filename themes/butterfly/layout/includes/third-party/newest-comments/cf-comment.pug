@@ -52,6 +52,11 @@ script.
       let $dom = document.querySelector('#card-newest-comments .aside-list')
       if ($dom) {
         $dom.innerHTML = result
+        // 多个评论时添加滚动样式
+        if (array.length > 4) {
+          $dom.style.maxHeight = '400px'
+          $dom.style.overflowY = 'auto'
+        }
         window.lazyLoadInstance && window.lazyLoadInstance.update()
         window.pjax && window.pjax.refresh($dom)
       }
