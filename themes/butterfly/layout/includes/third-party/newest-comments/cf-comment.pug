@@ -2,10 +2,10 @@
 - var server = cfConfig.server || ''
 - var siteKey = cfConfig.site_key || 'default'
 - var newestConfig = theme.newest_comments || {}
-- var showAvatar = newestConfig.avatar !== false
+- var showAvatar = newestConfig.avatar !== false ? 'true' : 'false'
 - var storageTime = newestConfig.storage || 10
 - var commentLimit = newestConfig.limit || 6
-- var lazyloadEnabled = theme.lazyload && theme.lazyload.enable
+- var lazyloadEnabled = (theme.lazyload && theme.lazyload.enable) ? 'true' : 'false'
 
 script.
   (function() {
@@ -28,15 +28,13 @@ script.
 
       if (array.length) {
         for (let i = 0; i < array.length; i++) {
-          // 使用 page_url 来链接到文章，如果没有则使用 area_key
           const pageUrl = array[i].page_url ? '/' + array[i].page_url : '/' + array[i].area_key.replace(/-/g, '/') + '.html'
           const commentUrl = pageUrl + '#cf-comment-wrap'
 
           result += '<div class=\'aside-list-item\'>'
 
-          if (!{showAvatar}) {
-            // cf-comment 暂不支持头像，使用默认头像
-            const imgAttr = !{lazyloadEnabled} ? 'data-lazy-src' : 'src'
+          if ('!{showAvatar}' === 'true') {
+            const imgAttr = '!{lazyloadEnabled}' === 'true' ? 'data-lazy-src' : 'src'
             result += `<a href='${commentUrl}' class='thumbnail'><img ${imgAttr}='https://cravatar.cn/avatar/?d=mp&s=48' alt='用户'></a>`
           }
 
@@ -105,13 +103,11 @@ script.
       }
     }
 
-    // 确保 DOM 就绪后执行
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', newestCommentInit)
     } else {
       newestCommentInit()
     }
 
-    // PJAX 支持
     document.addEventListener('pjax:complete', newestCommentInit)
   })()

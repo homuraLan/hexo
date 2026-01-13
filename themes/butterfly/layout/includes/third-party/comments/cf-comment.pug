@@ -15,7 +15,7 @@ if isCfCommentInUse
   - var pageUrl = page.path || ''
   //- 评论系统切换逻辑所需变量
   - var firstCommentSystem = (theme.comments.use[0] || '').toLowerCase()
-  - var isLazyloadEnabled = theme.comments.lazyload === true
+  - var isLazyloadEnabled = theme.comments.lazyload === true ? 'true' : 'false'
 
   //- 将动态数据存储在隐藏元素中，供JS运行时读取
   #cf-comment-data(
@@ -144,17 +144,15 @@ if isCfCommentInUse
       
       // 多评论系统切换逻辑
       const isCfCommentFirst = '!{firstCommentSystem}' === 'cf-comment';
-      const isLazyload = !{isLazyloadEnabled};
+      const isLazyload = '!{isLazyloadEnabled}' === 'true';
 
       if (isCfCommentFirst || isLazyload) {
-        // cf-comment是默认系统，直接加载
         if (isLazyload) {
           btf.loadComment(document.getElementById('cf-comment-wrap'), loadCfComment);
         } else {
           loadCfComment();
         }
       } else {
-        // cf-comment不是默认系统，定义为备选加载函数
         window.loadOtherComment = function() {
           loadCfComment();
         }
