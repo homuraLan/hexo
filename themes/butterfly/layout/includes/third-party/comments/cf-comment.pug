@@ -14,6 +14,18 @@ if isCfCommentInUse
   - var pageTitle = page.title || '评论区'
   - var pageUrl = page.path || ''
 
+  //- 将动态数据存储在隐藏元素中，供JS运行时读取
+  #cf-comment-data(
+    data-server=server
+    data-site-key=siteKey
+    data-area-key=dynamicAreaKey
+    data-theme=cfTheme
+    data-lang=lang
+    data-area-name=pageTitle
+    data-page-url=pageUrl
+    style="display:none"
+  )
+
   script.
     (()=>{
       function loadCfComment() {
@@ -23,21 +35,30 @@ if isCfCommentInUse
           return;
         }
 
+        // 从data属性读取配置（支持PJAX动态更新）
+        const dataEl = document.getElementById('cf-comment-data');
+        if (!dataEl) {
+          console.error('CF-Comment: 找不到配置数据');
+          return;
+        }
+
+        const server = dataEl.dataset.server;
+        const siteKey = dataEl.dataset.siteKey;
+        const areaKey = dataEl.dataset.areaKey;
+        const cfTheme = dataEl.dataset.theme;
+        const lang = dataEl.dataset.lang;
+        const areaName = encodeURIComponent(dataEl.dataset.areaName);
+        const pageUrl = encodeURIComponent(dataEl.dataset.pageUrl);
+
         // 清空容器内容，避免重复加载
         cfCommentWrap.innerHTML = '';
 
         // 确定主题色
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        const resolvedTheme = '!{cfTheme}' === 'auto' ? (isDark ? 'dark' : 'light') : '!{cfTheme}';
-
-        // 动态area_key - 每篇文章对应独立的评论区
-        const siteKey = '!{siteKey}';
-        const areaKey = '!{dynamicAreaKey}';
-        const areaName = encodeURIComponent('!{pageTitle}');
-        const pageUrl = encodeURIComponent('!{pageUrl}');
+        const resolvedTheme = cfTheme === 'auto' ? (isDark ? 'dark' : 'light') : cfTheme;
 
         // 构建iframe URL - 支持自动创建评论区，page_url字段存储文章URL
-        const iframeUrl = '!{server}' + '/embed/area/' + areaKey + '?theme=' + resolvedTheme + '&lang=!{lang}&auto_create=1&site_key=' + siteKey + '&area_name=' + areaName + '&page_url=' + pageUrl;
+        const iframeUrl = server + '/embed/area/' + areaKey + '?theme=' + resolvedTheme + '&lang=' + lang + '&auto_create=1&site_key=' + siteKey + '&area_name=' + areaName + '&page_url=' + pageUrl;
         
         // 创建iframe
         cfCommentWrap.innerHTML = `
@@ -59,7 +80,7 @@ if isCfCommentInUse
             setTimeout(() => {
               try {
                 // 如果cf-comment支持，会通过postMessage发送高度信息
-                iframe.contentWindow.postMessage({ type: 'getHeight' }, '!{server}');
+                iframe.contentWindow.postMessage({ type: 'getHeight' }, server);
               } catch (e) {
                 // 跨域访问限制，正常情况
               }
@@ -89,7 +110,9 @@ if isCfCommentInUse
       // 监听iframe消息，动态调整高度
       const messageHandler = function(event) {
         // 检查消息来源
-        if (event.origin !== '!{server}') {
+        const dataEl = document.getElementById('cf-comment-data');
+        const server = dataEl ? dataEl.dataset.server : '';
+        if (!server || event.origin !== server) {
           return;
         }
         
@@ -133,4 +156,9 @@ if isCfCommentInUse
           loadCfComment();
         }
       }
+
+      // PJAX支持：页面切换时重新加载评论
+      document.addEventListener('pjax:complete', function() {
+        loadCfComment();
+      });
     })()
