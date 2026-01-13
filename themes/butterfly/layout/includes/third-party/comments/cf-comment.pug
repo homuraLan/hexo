@@ -53,6 +53,9 @@ if isCfCommentInUse
         const areaName = encodeURIComponent(dataEl.dataset.areaName);
         const pageUrl = encodeURIComponent(dataEl.dataset.pageUrl);
 
+        // 调试信息
+        console.log('CF-Comment 加载:', { areaKey, areaName: decodeURIComponent(areaName), pageUrl: decodeURIComponent(pageUrl) });
+
         // 清空容器内容，避免重复加载
         cfCommentWrap.innerHTML = '';
 
