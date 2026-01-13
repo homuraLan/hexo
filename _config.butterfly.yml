@@ -422,7 +422,7 @@ artalk:
 # https://github.com/joyance-professional/cf-comment
 cf-comment:
   server: https://cf.homura.top
-  area_key: cfhexo
+  site_key: homurahexo
   theme: auto # light/dark/auto
   lang: zh-CN # zh-CN/en
   enable: true
