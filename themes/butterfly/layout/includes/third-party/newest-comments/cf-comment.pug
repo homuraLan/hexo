@@ -1,14 +1,20 @@
-- var { server, site_key } = theme['cf-comment']
-- var siteKey = site_key || 'default'
+- var cfConfig = theme['cf-comment'] || {}
+- var server = cfConfig.server || ''
+- var siteKey = cfConfig.site_key || 'default'
+- var newestConfig = theme.newest_comments || {}
+- var showAvatar = newestConfig.avatar !== false
+- var storageTime = newestConfig.storage || 10
+- var commentLimit = newestConfig.limit || 6
+- var lazyloadEnabled = theme.lazyload && theme.lazyload.enable
 
 script.
   (function() {
     const changeContent = (content) => {
       if (content === '') return content
 
-      content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[!{_p("aside.card_newest_comments.image")}]')
-      content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[!{_p("aside.card_newest_comments.link")}]')
-      content = content.replace(/<pre><code>.*?<\/pre>/gi, '[!{_p("aside.card_newest_comments.code")}]')
+      content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[#{_p("aside.card_newest_comments.image")}]')
+      content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[#{_p("aside.card_newest_comments.link")}]')
+      content = content.replace(/<pre><code>.*?<\/pre>/gi, '[#{_p("aside.card_newest_comments.code")}]')
       content = content.replace(/<[^>]+>/g, '')
 
       if (content.length > 150) {
@@ -28,10 +34,10 @@ script.
 
           result += '<div class=\'aside-list-item\'>'
 
-          if (!{theme.newest_comments.avatar}) {
+          if (#{showAvatar ? 'true' : 'false'}) {
             // cf-comment 暂不支持头像，使用默认头像
-            const name = '!{theme.lazyload.enable ? "data-lazy-src" : "src"}'
-            result += `<a href='${commentUrl}' class='thumbnail'><img ${name}='https://cravatar.cn/avatar/?d=mp&s=48' alt='用户'></a>`
+            const imgAttr = '#{lazyloadEnabled ? "data-lazy-src" : "src"}'
+            result += `<a href='${commentUrl}' class='thumbnail'><img ${imgAttr}='https://cravatar.cn/avatar/?d=mp&s=48' alt='用户'></a>`
           }
 
           result += `<div class='content'>
@@ -40,7 +46,7 @@ script.
           </div></div>`
         }
       } else {
-        result += '!{_p("aside.card_newest_comments.zero")}'
+        result += '#{_p("aside.card_newest_comments.zero")}'
       }
 
       let $dom = document.querySelector('#card-newest-comments .aside-list')
@@ -53,7 +59,8 @@ script.
 
     const getComment = async () => {
       try {
-        const res = await fetch('!{server}/api/!{siteKey}/latest-comments?limit=!{theme.newest_comments.limit}', { method: 'GET' })
+        const apiUrl = '#{server}/api/#{siteKey}/latest-comments?limit=#{commentLimit}'
+        const res = await fetch(apiUrl, { method: 'GET' })
         const result = await res.json()
 
         if (result.success && result.data) {
@@ -65,7 +72,8 @@ script.
             'created_at': e.created_at
           }))
 
-          saveToLocal.set('cf-comment-newest-comments', JSON.stringify(cfCommentArray), !{theme.newest_comments.storage}/(60*24))
+          const storageDays = #{storageTime} / (60 * 24)
+          saveToLocal.set('cf-comment-newest-comments', JSON.stringify(cfCommentArray), storageDays)
           generateHtml(cfCommentArray)
         } else {
           throw new Error(result.message || '获取评论失败')
@@ -74,7 +82,7 @@ script.
         console.error('CF-Comment newest comments error:', e)
         const $dom = document.querySelector('#card-newest-comments .aside-list')
         if ($dom) {
-          $dom.innerHTML = '!{_p("aside.card_newest_comments.error")}'
+          $dom.innerHTML = '#{_p("aside.card_newest_comments.error")}'
         }
       }
     }

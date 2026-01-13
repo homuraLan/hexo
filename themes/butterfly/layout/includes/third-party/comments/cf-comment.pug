@@ -140,9 +140,9 @@ if isCfCommentInUse
       window.cfCommentMessageHandler = messageHandler;
       
       // 多评论系统切换逻辑
-      const firstCommentSystem = '!{theme.comments.use[0]}';
-      const isLazyload = !{theme.comments.lazyload};
-      
+      const firstCommentSystem = '#{theme.comments.use[0] || ""}';
+      const isLazyload = #{theme.comments.lazyload ? 'true' : 'false'};
+
       if (firstCommentSystem.toLowerCase() === 'cf-comment' || isLazyload) {
         // cf-comment是默认系统，直接加载
         if (isLazyload) {
