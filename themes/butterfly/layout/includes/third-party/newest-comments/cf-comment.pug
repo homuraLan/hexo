@@ -30,17 +30,19 @@ script.
         for (let i = 0; i < array.length; i++) {
           const pageUrl = array[i].page_url ? '/' + array[i].page_url : '/' + array[i].area_key.replace(/-/g, '/') + '.html'
           const commentUrl = pageUrl + '#cf-comment-wrap'
+          const avatarUrl = array[i].avatar_url || 'https://cravatar.cn/avatar/?d=mp&s=48'
+          const authorName = array[i].author_name || '匿名用户'
 
           result += '<div class=\'aside-list-item\'>'
 
           if ('!{showAvatar}' === 'true') {
             const imgAttr = '!{lazyloadEnabled}' === 'true' ? 'data-lazy-src' : 'src'
-            result += `<a href='${commentUrl}' class='thumbnail'><img ${imgAttr}='https://cravatar.cn/avatar/?d=mp&s=48' alt='用户'></a>`
+            result += `<a href='${commentUrl}' class='thumbnail'><img ${imgAttr}='${avatarUrl}' alt='${authorName}'></a>`
           }
 
           result += `<div class='content'>
           <a class='comment' href='${commentUrl}' title='${array[i].preview}'>${changeContent(array[i].preview)}</a>
-          <div class='name'><span>${array[i].area_name} / </span><time datetime="${array[i].created_at}">${btf.diffDate(array[i].created_at, true)}</time></div>
+          <div class='name'><span>${authorName} · ${array[i].area_name}</span><time datetime="${array[i].created_at}">${btf.diffDate(array[i].created_at, true)}</time></div>
           </div></div>`
         }
       } else {
@@ -67,7 +69,9 @@ script.
             'area_key': e.area_key,
             'area_name': e.area_name || e.area_key,
             'page_url': e.page_url || '',
-            'created_at': e.created_at
+            'created_at': e.created_at,
+            'author_name': e.author_name || '',
+            'avatar_url': e.avatar_url || ''
           }))
 
           const storageDays = !{storageTime} / (60 * 24)

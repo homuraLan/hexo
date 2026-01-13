@@ -14,3 +14,4 @@ token
 Dockerfile
 docker-compose.yml
 start.sh
+tmpclaude-*
