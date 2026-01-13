@@ -72,7 +72,8 @@ div
   //-   !=partial('includes/third-party/pwanotice', {}, {cache: true})
 
   if theme.busuanzi.site_uv || theme.busuanzi.site_pv || theme.busuanzi.page_pv
-    script(async data-pjax src='//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js')
+    //- 使用更稳定的busuanzi镜像源
+    script(async data-pjax src='https://vercount.one/js')
 
 //- Simple test script first
 script.
