@@ -46,12 +46,12 @@ if isCfCommentInUse
         
         // 创建iframe
         cfCommentWrap.innerHTML = `
-          <iframe id="cf-comment-iframe" 
+          <iframe id="cf-comment-iframe"
                   src="${iframeUrl}"
-                  width="100%" 
-                  frameborder="0" 
-                  scrolling="no" 
-                  style="border: none; height: 300px; min-height: 200px; transition: height 0.3s ease;" 
+                  width="100%"
+                  frameborder="0"
+                  scrolling="auto"
+                  style="border: none; height: 300px; min-height: 200px; max-height: 800px; transition: height 0.3s ease;"
                   title="CF-Comment评论系统">
           </iframe>
         `;
@@ -104,16 +104,17 @@ if isCfCommentInUse
         if (!iframe) return;
         
         // 处理高度调整消息
+        const maxHeight = 800;
         if (event.data && typeof event.data === 'object') {
           if (event.data.type === 'resize' && event.data.height) {
             // cf-comment发送的标准resize消息
-            iframe.style.height = Math.max(event.data.height, 200) + 'px';
+            iframe.style.height = Math.min(Math.max(event.data.height, 200), maxHeight) + 'px';
           } else if (event.data.height && !event.data.type) {
             // 兼容其他格式的高度消息
-            iframe.style.height = Math.max(event.data.height, 200) + 'px';
+            iframe.style.height = Math.min(Math.max(event.data.height, 200), maxHeight) + 'px';
           } else if (typeof event.data === 'number') {
             // 纯数字高度消息
-            iframe.style.height = Math.max(event.data, 200) + 'px';
+            iframe.style.height = Math.min(Math.max(event.data, 200), maxHeight) + 'px';
           }
         }
       };
