@@ -13,6 +13,9 @@ if isCfCommentInUse
   //- 获取页面标题和URL用于自动创建评论区
   - var pageTitle = page.title || '评论区'
   - var pageUrl = page.path || ''
+  //- 评论系统切换逻辑所需变量
+  - var firstCommentSystem = (theme.comments.use[0] || '').toLowerCase()
+  - var isLazyloadEnabled = theme.comments.lazyload === true
 
   //- 将动态数据存储在隐藏元素中，供JS运行时读取
   #cf-comment-data(
@@ -140,10 +143,10 @@ if isCfCommentInUse
       window.cfCommentMessageHandler = messageHandler;
       
       // 多评论系统切换逻辑
-      const firstCommentSystem = '#{theme.comments.use[0] || ""}';
-      const isLazyload = #{theme.comments.lazyload ? 'true' : 'false'};
+      const isCfCommentFirst = '!{firstCommentSystem}' === 'cf-comment';
+      const isLazyload = !{isLazyloadEnabled};
 
-      if (firstCommentSystem.toLowerCase() === 'cf-comment' || isLazyload) {
+      if (isCfCommentFirst || isLazyload) {
         // cf-comment是默认系统，直接加载
         if (isLazyload) {
           btf.loadComment(document.getElementById('cf-comment-wrap'), loadCfComment);

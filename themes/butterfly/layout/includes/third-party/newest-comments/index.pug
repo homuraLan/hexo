@@ -1,9 +1,8 @@
 //- Newest comments component
 - var use = theme.comments && theme.comments.use
+- var firstComment = use && use[0] ? use[0].toLowerCase() : ''
 
-if use && use[0] === 'CF-Comment'
-  include ./cf-comment.pug
-else if use && use[0] === 'cf-comment'
+if firstComment === 'cf-comment'
   include ./cf-comment.pug
 else if use && use[0] === 'Valine'
   include ./valine.pug

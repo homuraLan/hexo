@@ -12,9 +12,9 @@ script.
     const changeContent = (content) => {
       if (content === '') return content
 
-      content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[#{_p("aside.card_newest_comments.image")}]')
-      content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[#{_p("aside.card_newest_comments.link")}]')
-      content = content.replace(/<pre><code>.*?<\/pre>/gi, '[#{_p("aside.card_newest_comments.code")}]')
+      content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]')
+      content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]')
+      content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]')
       content = content.replace(/<[^>]+>/g, '')
 
       if (content.length > 150) {
@@ -34,9 +34,9 @@ script.
 
           result += '<div class=\'aside-list-item\'>'
 
-          if (#{showAvatar ? 'true' : 'false'}) {
+          if (!{showAvatar}) {
             // cf-comment 暂不支持头像，使用默认头像
-            const imgAttr = '#{lazyloadEnabled ? "data-lazy-src" : "src"}'
+            const imgAttr = !{lazyloadEnabled} ? 'data-lazy-src' : 'src'
             result += `<a href='${commentUrl}' class='thumbnail'><img ${imgAttr}='https://cravatar.cn/avatar/?d=mp&s=48' alt='用户'></a>`
           }
 
@@ -46,7 +46,7 @@ script.
           </div></div>`
         }
       } else {
-        result += '#{_p("aside.card_newest_comments.zero")}'
+        result += '暂无评论'
       }
 
       let $dom = document.querySelector('#card-newest-comments .aside-list')
@@ -59,7 +59,7 @@ script.
 
     const getComment = async () => {
       try {
-        const apiUrl = '#{server}/api/#{siteKey}/latest-comments?limit=#{commentLimit}'
+        const apiUrl = '!{server}/api/!{siteKey}/latest-comments?limit=!{commentLimit}'
         const res = await fetch(apiUrl, { method: 'GET' })
         const result = await res.json()
 
@@ -72,7 +72,7 @@ script.
             'created_at': e.created_at
           }))
 
-          const storageDays = #{storageTime} / (60 * 24)
+          const storageDays = !{storageTime} / (60 * 24)
           saveToLocal.set('cf-comment-newest-comments', JSON.stringify(cfCommentArray), storageDays)
           generateHtml(cfCommentArray)
         } else {
@@ -82,7 +82,7 @@ script.
         console.error('CF-Comment newest comments error:', e)
         const $dom = document.querySelector('#card-newest-comments .aside-list')
         if ($dom) {
-          $dom.innerHTML = '#{_p("aside.card_newest_comments.error")}'
+          $dom.innerHTML = '加载失败'
         }
       }
     }
