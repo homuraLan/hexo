@@ -2,7 +2,7 @@
 - var siteKey = site_key || 'default'
 
 script.
-  window.addEventListener('load', () => {
+  (function() {
     const changeContent = (content) => {
       if (content === '') return content
 
@@ -22,14 +22,14 @@ script.
 
       if (array.length) {
         for (let i = 0; i < array.length; i++) {
-          // 使用 page_url（存储在intro字段中）来链接到文章，如果没有则使用 area_key
+          // 使用 page_url 来链接到文章，如果没有则使用 area_key
           const pageUrl = array[i].page_url ? '/' + array[i].page_url : '/' + array[i].area_key.replace(/-/g, '/') + '.html'
           const commentUrl = pageUrl + '#cf-comment-wrap'
 
           result += '<div class=\'aside-list-item\'>'
 
           if (!{theme.newest_comments.avatar}) {
-            // cf-comment 暂不支持头像，使用默认头�?
+            // cf-comment 暂不支持头像，使用默认头像
             const name = '!{theme.lazyload.enable ? "data-lazy-src" : "src"}'
             result += `<a href='${commentUrl}' class='thumbnail'><img ${name}='https://cravatar.cn/avatar/?d=mp&s=48' alt='用户'></a>`
           }
@@ -44,9 +44,11 @@ script.
       }
 
       let $dom = document.querySelector('#card-newest-comments .aside-list')
-      $dom.innerHTML = result
-      window.lazyLoadInstance && window.lazyLoadInstance.update()
-      window.pjax && window.pjax.refresh($dom)
+      if ($dom) {
+        $dom.innerHTML = result
+        window.lazyLoadInstance && window.lazyLoadInstance.update()
+        window.pjax && window.pjax.refresh($dom)
+      }
     }
 
     const getComment = async () => {
@@ -71,21 +73,37 @@ script.
       } catch (e) {
         console.error('CF-Comment newest comments error:', e)
         const $dom = document.querySelector('#card-newest-comments .aside-list')
-        $dom.innerHTML = '!{_p("aside.card_newest_comments.error")}'
-      }
-    }
-
-    const newestCommentInit = () => {
-      if (document.querySelector('#card-newest-comments .aside-list')) {
-        const data = saveToLocal.get('cf-comment-newest-comments')
-        if (data) {
-          generateHtml(JSON.parse(data))
-        } else {
-          getComment()
+        if ($dom) {
+          $dom.innerHTML = '!{_p("aside.card_newest_comments.error")}'
         }
       }
     }
 
-    newestCommentInit()
+    const newestCommentInit = () => {
+      const $dom = document.querySelector('#card-newest-comments .aside-list')
+      if (!$dom) return
+
+      const data = saveToLocal.get('cf-comment-newest-comments')
+      if (data) {
+        try {
+          generateHtml(JSON.parse(data))
+        } catch (e) {
+          console.error('CF-Comment: 缓存数据解析失败，重新获取', e)
+          localStorage.removeItem('cf-comment-newest-comments')
+          getComment()
+        }
+      } else {
+        getComment()
+      }
+    }
+
+    // 确保 DOM 就绪后执行
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', newestCommentInit)
+    } else {
+      newestCommentInit()
+    }
+
+    // PJAX 支持
     document.addEventListener('pjax:complete', newestCommentInit)
-  })
+  })()
