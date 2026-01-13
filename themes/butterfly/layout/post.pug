@@ -30,29 +30,7 @@ block content
     if theme.related_post && theme.related_post.enable
       != related_posts(page,site.posts)
 
-    //- 详细调试信息
-    script.
-      console.log('🔍 评论系统调试开始');
-      console.log('🔍 page.comments:', '#{page.comments}');
-      console.log('🔍 theme.comments:', !{JSON.stringify(theme.comments || {})});
-      console.log('🔍 条件1 - page.comments !== false:', #{page.comments} !== false);
-      console.log('🔍 条件2 - theme.comments存在:', !{theme.comments ? 'true' : 'false'});
-      console.log('🔍 条件3 - theme.comments.use存在:', !{(theme.comments && theme.comments.use) ? 'true' : 'false'});
-      if (!{theme.comments && theme.comments.use}) {
-        console.log('🔍 theme.comments.use内容:', !{JSON.stringify(theme.comments.use)});
-      }
-      console.log('🔍 最终条件判断结果:', (!{page.comments} !== false) && !{theme.comments ? 'true' : 'false'} && !{(theme.comments && theme.comments.use) ? 'true' : 'false'});
-
     if page.comments !== false && theme.comments && theme.comments.use
-      script.
-        console.log('✅ 评论系统条件判断通过，开始加载');
       - var commentsJsLoad = true
       !=partial('includes/third-party/comments/index', {}, {cache: true})
-    else
-      script.
-        console.log('❌ 评论系统条件判断失败');
-        console.log('❌ 失败原因分析:');
-        console.log('  - page.comments !== false:', (!{page.comments} !== false));
-        console.log('  - theme.comments存在:', !{theme.comments ? 'true' : 'false'});
-        console.log('  - theme.comments.use存在:', !{(theme.comments && theme.comments.use) ? 'true' : 'false'});
       
