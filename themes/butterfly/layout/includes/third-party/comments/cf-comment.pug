@@ -37,7 +37,7 @@ if isCfCommentInUse
         const pageUrl = encodeURIComponent('!{pageUrl}');
 
         // 构建iframe URL - 支持自动创建评论区，page_url字段存储文章URL
-        const iframeUrl = '!{server}' + '/embed/' + siteKey + '/' + areaKey + '?theme=' + resolvedTheme + '&lang=!{lang}&auto_create=1&area_name=' + areaName + '&page_url=' + pageUrl;
+        const iframeUrl = '!{server}' + '/embed/area/' + areaKey + '?theme=' + resolvedTheme + '&lang=!{lang}&auto_create=1&site_key=' + siteKey + '&area_name=' + areaName + '&page_url=' + pageUrl;
         
         // 创建iframe
         cfCommentWrap.innerHTML = `
