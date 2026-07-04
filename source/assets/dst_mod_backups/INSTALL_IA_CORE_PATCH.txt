@@ -1,0 +1,113 @@
+# Island Adventures Core 补丁安装说明
+
+## 作用
+
+这个补丁用于修复进入海难世界时的闪退问题。
+
+典型报错：
+
+```text
+workshop-1467214795/scripts/prefabs/shipwrecked.lua:130
+attempt to call method 'SetIAOverhang' (a nil value)
+```
+
+实际原因是：
+
+- `1467214795` 是 `Island Adventures - Shipwrecked / 岛屿冒险 - 海难`
+- `3435352667` 是 `Island Adventures Core / 岛屿冒险 - 核心`
+- 海难 mod 调用了核心 mod 应该提供的 `Map:SetIAOverhang()` 等方法
+- 但当前版本的核心 mod 没有自动加载 `postinit/package/map.lua`
+
+本补丁修改的是 `3435352667`，不是 `1467214795`。
+
+## 补丁内容
+
+修改文件：
+
+```text
+3435352667/main/postinit.lua
+```
+
+加入：
+
+```lua
+-- codex patch: load IA map package methods needed by Shipwrecked worlds
+modimport("postinit/package/map")
+```
+
+## 客户端安装
+
+1. 完全退出《Don't Starve Together》。
+
+2. 找到本机 Steam Workshop mod 目录。
+
+   常见路径：
+
+   ```text
+   E:\SteamLibrary\steamapps\workshop\content\322330\3435352667
+   C:\Program Files (x86)\Steam\steamapps\workshop\content\322330\3435352667
+   ```
+
+3. 备份原文件：
+
+   ```text
+   3435352667\main\postinit.lua
+   ```
+
+4. 用补丁包里的 `3435352667` 覆盖原目录，或者只替换这个文件：
+
+   ```text
+   3435352667\main\postinit.lua
+   ```
+
+5. 重新启动游戏，再加入服务器。
+
+## 服务器安装
+
+服务器上需要给每个分片缓存中的 `3435352667` 都应用同样补丁。
+
+示例路径：
+
+```text
+/opt/dst-dedicated-server/ugc_mods/Cluster_1/Master/content/322330/3435352667/main/postinit.lua
+/opt/dst-dedicated-server/ugc_mods/Cluster_1/Caves/content/322330/3435352667/main/postinit.lua
+/opt/dst-dedicated-server/ugc_mods/Cluster_1/Forest/content/322330/3435352667/main/postinit.lua
+/opt/dst-dedicated-server/ugc_mods/Cluster_1/Volcano/content/322330/3435352667/main/postinit.lua
+```
+
+修改后重启四个分片：
+
+```bash
+systemctl restart dst-shard@Master dst-shard@Caves dst-shard@Forest dst-shard@Volcano
+```
+
+## 当前备份文件
+
+已备份的补丁包：
+
+```text
+D:\code\dst_mod_backups\3435352667_IA_Core_patched_20260704035721.zip
+D:\code\dst_mod_backups\1467214795_Island_Adventures_Shipwrecked_20260704035721.zip
+```
+
+其中真正需要安装的是：
+
+```text
+3435352667_IA_Core_patched_20260704035721.zip
+```
+
+`1467214795` 只是触发报错的海难 mod 备份，不是补丁主体。
+
+## 注意事项
+
+Steam 自动更新、验证游戏完整性、重新订阅 mod，都可能覆盖补丁。
+
+如果更新后再次出现：
+
+```text
+SetIAOverhang nil
+SetBaseTile nil
+RunWithoutIACorners nil
+```
+
+重新安装此补丁即可。
